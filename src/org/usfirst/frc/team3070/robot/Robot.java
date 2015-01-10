@@ -91,7 +91,9 @@ public class Robot extends IterativeRobot {
     }
     
     /*
-     * This method is to be used with 
+     * This method is to be used if the ultrasonic sensor is plugged into an
+     * analog input and not a digital one.  I don't know why we would do such
+     * a thing
      */
     private double getDistanceFromVoltage(double voltage)
     {
