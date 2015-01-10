@@ -19,14 +19,16 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-	Gyro gyro;
 	AnalogInput ultra;
+	Gyro gyro;
 	Joystick xbox;
-	Talon tal1;
-	Talon tal2;
+	Talon talL;
+	Talon talR;
     public void robotInit() {
-    	tal1 = new Talon(0);
-    	tal2 = new Talon(1);
+    	talL = new Talon(0);
+    	talR = new Talon(1);
+    	ultra = new AnalogInput(0);
+    	gyro = new Gyro(1);
     	
     }
 
@@ -41,8 +43,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        tal1.set(xbox.getRawAxis(1)/2);
-        tal2.set(xbox.getRawAxis(4)/2);
+        talL.set(xbox.getRawAxis(1)/2);
+        talR.set(xbox.getRawAxis(4)/2);
         
     }
     
