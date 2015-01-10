@@ -1,7 +1,11 @@
 
 package org.usfirst.frc.team3070.robot;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -11,33 +15,75 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	public static final double TAL_SPEED = 0.75;
+	
+	private Ultrasonic ultra;
+	private Talon talLeft;
+	private Talon talRight;
+	private Gyro gyro;
+	
+	private Timer timer;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-    public void robotInit() {
-
+    public void robotInit()
+    {
+    	ultra = new Ultrasonic(0, 0);
+    	talLeft = new Talon(1);
+    	talRight = new Talon(0);
+    	gyro = new Gyro(0);
+    	
+    	timer = new Timer();
+    }
+    
+    public void autonomousInit()
+    {
+    	timer.reset();
+    	timer.start();
+    	
+    	gyro.reset();
     }
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-
+    public void autonomousPeriodic()
+    {
+    	if(ultra.getRangeInches() > 1000000) {
+    		turnLeft();
+    	}else {
+    		moveForward();
+    	}
+    	
+    	if(timer.get() > 500) {
+    		System.out.println(gyro.getAngle());
+    		timer.reset();
+    	}
+    }
+    
+    private void turnLeft()
+    {
+    	talLeft.set(-TAL_SPEED);
+    	talRight.set(TAL_SPEED);
+    }
+    
+    private void moveForward()
+    {
+    	talLeft.set(TAL_SPEED);
+    	talRight.set(TAL_SPEED);
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
     public void teleopPeriodic() {
         
     }
     
-    /**
-     * This function is called periodically during test mode
-     */
     public void testPeriodic() {
     
     }
     
+    public void disabledInit()
+    {
+    	timer.stop();
+    	gyro.reset();
+    }
 }
