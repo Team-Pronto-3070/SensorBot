@@ -1,11 +1,11 @@
 
 package org.usfirst.frc.team3070.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Ultrasonic;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class Robot extends IterativeRobot {
 	
 	public static final double TAL_SPEED = 0.75;
+	// Must be set to the correct value.  
+	private static final double VOLTS_TO_INCHES = 1;
 	
-	private Ultrasonic ultra;
+	private AnalogInput ultraSonic;
 	private Talon talLeft;
 	private Talon talRight;
 	private Gyro gyro;
@@ -31,7 +33,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit()
     {
-    	ultra = new Ultrasonic(0, 0);
+    	ultraSonic = new AnalogInput(0);
     	talLeft = new Talon(1);
     	talRight = new Talon(0);
     	gyro = new Gyro(0);
@@ -49,7 +51,8 @@ public class Robot extends IterativeRobot {
 
     public void autonomousPeriodic()
     {
-    	if(ultra.getRangeInches() > 1000000) {
+    	double voltage = ultraSonic.getVoltage();
+    	if(getDistanceFromVoltage(voltage) > 1000000) {
     		turnLeft();
     	}else {
     		moveForward();
@@ -86,4 +89,13 @@ public class Robot extends IterativeRobot {
     	timer.stop();
     	gyro.reset();
     }
+    
+    /*
+     * This method is to be used with 
+     */
+    private double getDistanceFromVoltage(double voltage)
+    {
+    	return voltage * VOLTS_TO_INCHES;
+    }
+
 }
