@@ -2,6 +2,10 @@
 package org.usfirst.frc.team3070.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -15,8 +19,15 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+	Gyro gyro;
+	AnalogInput ultra;
+	Joystick xbox;
+	Talon tal1;
+	Talon tal2;
     public void robotInit() {
-
+    	tal1 = new Talon(0);
+    	tal2 = new Talon(1);
+    	
     }
 
     /**
@@ -30,6 +41,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+        tal1.set(xbox.getRawAxis(1)/2);
+        tal2.set(xbox.getRawAxis(4)/2);
         
     }
     
